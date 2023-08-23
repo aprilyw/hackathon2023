@@ -53,12 +53,7 @@ logger = getLogger(__name__)
 # -------------------------------------------------
 class ActionGPTFallback(Action):
     def __init__(self):
-    #     self.llm = LLM()
-        self.agent = GapGPT(
-                    model_type='openai',
-                    doc_type='pdf',
-                    doc_path='/Users/apwang/dev/hackathon2023/rasa-test-2/docs/OLContent.pdf',
-                )
+        self.llm = LLM()
 
     def name(self) -> str:
         return "action_gpt_fallback"
@@ -75,12 +70,10 @@ class ActionGPTFallback(Action):
         data = tracker.latest_message
         logger.info(f'data: {data}')
 
-        #bot = self.llm
-        #response = bot.chat_query(data['text'])
-
+        bot = self.llm
         query = data['text']
+        response = bot.chat_query(query)
 
-        response = self.agent.chat(query)
         dispatcher.utter_message(text=response)
         return []
 
